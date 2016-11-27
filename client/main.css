@@ -126,7 +126,7 @@ header .hide-completed {
   }
 }
 
-.hide-contact-points {
+.hide {
   display: none;
 }
 
@@ -140,3 +140,13 @@ h3 {
   -ms-user-select: none;      
   user-select: none;
 }
+
+.add-company {
+  padding: 15px;
+  color: grey;
+  font-size: 15px;
+  font-style: italic;
+  cursor: pointer;
+}
+
+

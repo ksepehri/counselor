@@ -4,6 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import moment from 'moment'; 
 
 import { ContactPoints } from '../api/contactpoints.js';
+import { Companies } from '../api/companies.js';
 
 import ContactPoint from './ContactPoint.jsx';
  
@@ -15,11 +16,16 @@ export class Company extends Component {
     this.state = {
       hide: true,
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   renderContactPoints(companyId) {
     return this.props.contactpoints.filter(cp => cp.companyId.toString() === companyId.toString()).map((contactpoint) => (
       <ContactPoint key={contactpoint._id} contactpoint={contactpoint} />
     ));
+  }
+  deleteThisCompany() {
+  	confirm("Are you sure?") ? Companies.remove(this.props.company._id) : "";
   }
 
   handleSubmit(event) {
@@ -59,12 +65,19 @@ export class Company extends Component {
   }
 
   render() {
+  	let positionInfo = this.props.company.position ? 
+  		<div><a href={this.props.company.position.url}>{this.props.company.position.name}</a></div> :
+  		"";
     return (
       <li>
+      	<button className="delete" onClick={this.deleteThisCompany.bind(this)}>
+	      &times;
+	    </button>
       	<h3 className="disable-select" onClick={this.toggleHide.bind(this)}>{this.props.company.name}</h3>
-      	<div className={this.state.hide ? "hide-contact-points" :""}>
+      	{positionInfo}
+      	<div className={this.state.hide ? "hide" :""}>
 	      	<ul>{this.renderContactPoints(this.props.company._id)}</ul>
-	      	<form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
+	      	<form className="new-task" onSubmit={this.handleSubmit} >
 	            <input
 	              type="text"
 	              ref="textInput"
